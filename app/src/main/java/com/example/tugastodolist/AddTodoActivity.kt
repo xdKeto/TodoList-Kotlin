@@ -1,5 +1,6 @@
 package com.example.tugastodolist
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -16,9 +17,10 @@ class AddTodoActivity : AppCompatActivity() {
         buttonSave.setOnClickListener {
             val todoText = editTextTodo.text.toString()
             if (todoText.isNotBlank()) {
-                //  Add the todoText to your main activity's list (implementation below)
-                // For now, just finish the activity
-                setResult(RESULT_OK)
+                val intent = Intent().apply {
+                    putExtra("TODO_TEXT", todoText)
+                }
+                setResult(RESULT_OK, intent)
                 finish()
             }
         }

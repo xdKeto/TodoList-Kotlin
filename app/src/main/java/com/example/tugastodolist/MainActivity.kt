@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,13 +16,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var todoAdapter: TodoAdapter
-    private val todoList = mutableListOf<String>() //Temporary storage
+    private val todoList = mutableListOf<Todo>()
 
     private val addTodoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            // Get the new TODO item from the AddTodoActivity (Not implemented yet)
-            // Add it to the todoList and update the RecyclerView
-            Toast.makeText(this, "TODO Added!", Toast.LENGTH_SHORT).show()
+            val todoText = result.data?.getStringExtra("TODO_TEXT") ?: ""
+            if (todoText.isNotBlank()) {
+                val newTodo = Todo(todoText)
+                todoList.add(newTodo)
+                todoAdapter.notifyItemInserted(todoList.size -1)
+            }
         }
     }
 
