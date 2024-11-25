@@ -52,7 +52,8 @@ class AddTodoActivity : AppCompatActivity() {
                 set(Calendar.MONTH, month)
                 set(Calendar.DAY_OF_MONTH, dayOfMonth)
             }
-            textViewDeadline.text = "${selectedDate?.get(Calendar.DAY_OF_MONTH)}/${selectedDate?.get(Calendar.MONTH) + 1}/${selectedDate?.get(Calendar.YEAR)}"
+            textViewDeadline.text = "${selectedDate?.get(Calendar.DAY_OF_MONTH)}/${selectedDate?.get(Calendar.MONTH)
+                ?.plus(1)}/${selectedDate?.get(Calendar.YEAR)}"
         }, year, month, day)
         datePickerDialog.show()
     }
