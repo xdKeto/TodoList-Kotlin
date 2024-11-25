@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,8 +22,11 @@ class MainActivity : AppCompatActivity() {
     private val addTodoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val todoText = result.data?.getStringExtra("TODO_TEXT") ?: ""
+            val deadlineMillis = result.data?.getLongExtra("TODO_DEADLINE", 0)
+            val deadline = if (deadlineMillis > 0) Date(deadlineMillis) else null
+
             if (todoText.isNotBlank()) {
-                val newTodo = Todo(todoText)
+                val newTodo = Todo(todoText, deadline = deadline)
                 todoList.add(newTodo)
                 todoAdapter.updateList(todoList) // Update the adapter's list
             }
