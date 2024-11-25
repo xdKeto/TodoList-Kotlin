@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.TugasTodoList" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/app_background</item>
+        <item name="colorPrimaryVariant">@color/app_background</item>
+        <item name="colorOnPrimary">@color/app_text</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/app_background</item>
+        <item name="colorSecondaryVariant">@color/app_background</item>
+        <item name="colorOnSecondary">@color/app_text</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/app_text</item>  <!-- Apply to all text -->
+        <item name="android:forceDarkAllowed">false</item> <!-- Force light mode -->
+    </style>
+
+    <style name="Theme.TugasTodoList.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.TugasTodoList.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.TugasTodoList.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
