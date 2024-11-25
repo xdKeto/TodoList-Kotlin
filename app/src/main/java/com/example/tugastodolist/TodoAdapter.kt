@@ -25,20 +25,7 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo = todoList[position]
         holder.textViewTodo.text = todo.text
-        holder.radioButtonDone.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                AlertDialog.Builder(holder.itemView.context)
-                    .setTitle("Mark as Done?")
-                    .setMessage("Are you sure you want to mark '${todo.text}' as done?")
-                    .setPositiveButton("Yes") { _, _ ->
-                        todoList.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, itemCount)
-                    }
-                    .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
-                    .show()
-            }
-        }
+        // Remove the setOnCheckedChangeListener here
     }
 
     override fun getItemCount(): Int = todoList.size
@@ -46,5 +33,40 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
     fun updateList(newList: MutableList<Todo>) {
         todoList = newList
         notifyDataSetChanged()
+    }
+
+    init { // Set the listener only once in the adapter's initializer
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return todoList[position].hashCode().toLong()
+    }
+
+    override fun onViewAttachedToWindow(holder: TodoViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.radioButtonDone.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val position = holder.adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val todo = todoList[position]
+                    AlertDialog.Builder(holder.itemView.context)
+                        .setTitle("Mark as Done?")
+                        .setMessage("Are you sure you want to mark '${todo.text}' as done?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            todoList.removeAt(position)
+                            notifyItemRemoved(position)
+                            notifyItemRangeChanged(position, itemCount)
+                        }
+                        .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+                        .show()
+                }
+            }
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: TodoViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.radioButtonDone.setOnCheckedChangeListener(null)
     }
 }
