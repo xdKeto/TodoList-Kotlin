@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class TodoAdapter(private var todoList: MutableList<Todo>) :
@@ -14,6 +13,7 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
     class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val radioButtonDone: RadioButton = itemView.findViewById(R.id.radioButtonDone)
         val textViewTodo: TextView = itemView.findViewById(R.id.textViewTodo)
+        val textViewDeadline: TextView = itemView.findViewById(R.id.textViewDeadline) // Added this line
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -26,6 +26,8 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
         val todo = todoList[position]
         holder.textViewTodo.text = todo.text
         holder.radioButtonDone.isChecked = todo.isDone // Set checked state from Todo object
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        holder.textViewDeadline.text = todo.deadline?.let { dateFormat.format(it) } ?: ""
     }
 
     override fun getItemCount(): Int = todoList.size
