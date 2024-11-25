@@ -1,14 +1,16 @@
 package com.example.tugastodolist
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
 class TodoAdapter(private var todoList: MutableList<Todo>) :
     RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
@@ -16,7 +18,8 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
     class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val radioButtonDone: RadioButton = itemView.findViewById(R.id.radioButtonDone)
         val textViewTodo: TextView = itemView.findViewById(R.id.textViewTodo)
-        val textViewDeadline: TextView = itemView.findViewById(R.id.textViewDeadline) // Added this line
+        val textViewDeadline: TextView = itemView.findViewById(R.id.textViewDeadline)
+        val buttonEdit: ImageButton = itemView.findViewById(R.id.buttonEdit) // Added this line
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -31,6 +34,15 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
         holder.radioButtonDone.isChecked = todo.isDone
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.textViewDeadline.text = todo.deadline?.let { dateFormat.format(it) } ?: ""
+
+        holder.buttonEdit.setOnClickListener {
+            val intent = Intent(holder.itemView.context, AddTodoActivity::class.java).apply {
+                putExtra("TODO_TEXT", todo.text)
+                putExtra("TODO_ID", position) // Pass the position to identify the todo
+                todo.deadline?.let { putExtra("TODO_DEADLINE", it.time) }
+            }
+            (holder.itemView.context as? MainActivity)?.editTodoLauncher?.launch(intent)
+        }
     }
 
     override fun getItemCount(): Int = todoList.size
@@ -54,7 +66,7 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
             val position = holder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 val todo = todoList[position]
-                todo.isDone = isChecked // Update Todo object's isDone property
+                todo.isDone = isChecked
                 AlertDialog.Builder(holder.itemView.context)
                     .setTitle("Mark as Done?")
                     .setMessage("Are you sure you want to mark '${todo.text}' as done?")
@@ -64,7 +76,7 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
                         notifyItemRangeChanged(position, itemCount)
                     }
                     .setNegativeButton("No") { dialog, _ ->
-                        todo.isDone = !isChecked //Revert if "No" is selected
+                        todo.isDone = !isChecked
                         notifyItemChanged(position)
                         dialog.dismiss()
                     }

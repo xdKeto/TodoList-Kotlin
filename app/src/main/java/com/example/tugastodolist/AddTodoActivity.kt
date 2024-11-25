@@ -15,6 +15,7 @@ class AddTodoActivity : AppCompatActivity() {
     private lateinit var buttonSave: Button
     private lateinit var textViewDeadline: TextView
     private var selectedDate: Calendar? = null
+    private var todoId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,12 +29,25 @@ class AddTodoActivity : AppCompatActivity() {
             showDatePicker()
         }
 
+        todoId = intent.getIntExtra("TODO_ID", -1)
+        val initialText = intent.getStringExtra("TODO_TEXT") ?: ""
+        val initialDeadlineMillis = intent.getLongExtra("TODO_DEADLINE", 0)
+        val initialDeadline = if (initialDeadlineMillis > 0) Date(initialDeadlineMillis) else null
+
+        editTextTodo.setText(initialText)
+        selectedDate = initialDeadline?.let { Calendar.getInstance().apply { time = it } }
+        selectedDate?.let {
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            textViewDeadline.text = dateFormat.format(it.time)
+        }
+
         buttonSave.setOnClickListener {
             val todoText = editTextTodo.text.toString()
             if (todoText.isNotBlank()) {
                 val intent = Intent().apply {
                     putExtra("TODO_TEXT", todoText)
                     selectedDate?.let { putExtra("TODO_DEADLINE", it.timeInMillis) }
+                    putExtra("TODO_ID", todoId)
                 }
                 setResult(RESULT_OK, intent)
                 finish()
