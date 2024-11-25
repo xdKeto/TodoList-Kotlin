@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTodoActivity : AppCompatActivity() {
@@ -52,8 +53,8 @@ class AddTodoActivity : AppCompatActivity() {
                 set(Calendar.MONTH, month)
                 set(Calendar.DAY_OF_MONTH, dayOfMonth)
             }
-            textViewDeadline.text = "${selectedDate?.get(Calendar.DAY_OF_MONTH)}/${selectedDate?.get(Calendar.MONTH)
-                ?.plus(1)}/${selectedDate?.get(Calendar.YEAR)}"
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            textViewDeadline.text = dateFormat.format(selectedDate?.time)
         }, year, month, day)
         datePickerDialog.show()
     }
