@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val todoText = result.data?.getStringExtra("TODO_TEXT") ?: ""
             val deadlineMillis = result.data?.getLongExtra("TODO_DEADLINE", 0)
-            val deadline = if (deadlineMillis > 0) Date(deadlineMillis) else null
+            val deadline = if (deadlineMillis!! > 0) Date(deadlineMillis) else null
 
             if (todoText.isNotBlank()) {
                 val newTodo = Todo(todoText, deadline = deadline)
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             if (todoId != -1 && todoId < todoList.size) {
                 val todoText = result.data?.getStringExtra("TODO_TEXT") ?: ""
                 val deadlineMillis = result.data?.getLongExtra("TODO_DEADLINE", 0)
-                val deadline = if (deadlineMillis > 0) Date(deadlineMillis) else null
+                val deadline = if (deadlineMillis!! > 0) Date(deadlineMillis) else null
                 todoList[todoId] = Todo(todoText, deadline = deadline)
                 todoAdapter.updateList(todoList)
             }
