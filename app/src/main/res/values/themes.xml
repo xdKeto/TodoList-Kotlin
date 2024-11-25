@@ -13,4 +13,6 @@
     <style name="Theme.TugasTodoList" parent="Base.Theme.TugasTodoList">
         <item name="android:forceDarkAllowed">false</item>  <!-- Force light mode -->
     </style>
+
+
 </resources>
