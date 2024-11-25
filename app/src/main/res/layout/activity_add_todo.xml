@@ -12,6 +12,18 @@
         android:hint="Enter your TODO item"
         android:inputType="text" />
 
+    <TextView
+        android:id="@+id/textViewDeadline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Deadline"
+        android:clickable="true"
+        android:focusable="true"
+        android:cursorVisible="false"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
