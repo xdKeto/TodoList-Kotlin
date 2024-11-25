@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TodoAdapter(private var todoList: MutableList<Todo>) :
     RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
@@ -25,7 +28,7 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo = todoList[position]
         holder.textViewTodo.text = todo.text
-        holder.radioButtonDone.isChecked = todo.isDone // Set checked state from Todo object
+        holder.radioButtonDone.isChecked = todo.isDone
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.textViewDeadline.text = todo.deadline?.let { dateFormat.format(it) } ?: ""
     }
