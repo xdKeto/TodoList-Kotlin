@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             if (todoText.isNotBlank()) {
                 val newTodo = Todo(todoText)
                 todoList.add(newTodo)
-                todoAdapter.notifyItemInserted(todoList.size -1)
+                todoAdapter.updateList(todoList) // Update the adapter's list
             }
         }
     }
