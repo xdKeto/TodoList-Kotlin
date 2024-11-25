@@ -2,6 +2,8 @@ package com.example.tugastodolist
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,8 +69,8 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
             if (position != RecyclerView.NO_POSITION) {
                 val todo = todoList[position]
                 todo.isDone = isChecked
-                AlertDialog.Builder(holder.itemView.context)
-                    .setTitle("Mark as Done?")
+                val builder = AlertDialog.Builder(holder.itemView.context)
+                builder.setTitle("Mark as Done?")
                     .setMessage("Are you sure you want to mark '${todo.text}' as done?")
                     .setPositiveButton("Yes") { _, _ ->
                         todoList.removeAt(position)
@@ -80,7 +82,14 @@ class TodoAdapter(private var todoList: MutableList<Todo>) :
                         notifyItemChanged(position)
                         dialog.dismiss()
                     }
-                    .show()
+
+                val dialog = builder.create()
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                (dialog.findViewById(android.R.id.message) as TextView).setTextColor(Color.BLACK)
+
             }
         }
     }
